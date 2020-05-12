@@ -1,0 +1,12 @@
+.info_label {
+ -fx-font-size: 5em;
+}
+#onMouse_label {
+ -fx-text-fill: #4394bf;
+}
+#onDragEntered_label {
+ -fx-text-fill: red;
+}
+#stackPane {
+ -fx-padding: 130px 0px 130px 0px;
+}
