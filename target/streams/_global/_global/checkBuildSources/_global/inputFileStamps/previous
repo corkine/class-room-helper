@@ -1,1 +1,1 @@
-["sbt.Task[scala.collection.Seq[scala.Tuple2[java.nio.file.Path, sbt.nio.FileStamp]]]",{"hashes":[["C:\\Users\\Corkine\\Desktop\\classHelper\\build.sbt","ae94168affeef97abb048296c1aa7e9addf2383f"]],"lastModifiedTimes":[]}]
+["sbt.Task[scala.collection.Seq[scala.Tuple2[java.nio.file.Path, sbt.nio.FileStamp]]]",{"hashes":[["/Users/corkine/Desktop/classRoomHelper/build.sbt","b3d21ac3258cde1284d3c1f0caa1514992b30164"]],"lastModifiedTimes":[]}]

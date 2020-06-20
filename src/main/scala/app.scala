@@ -34,20 +34,9 @@ trait ClassRoom {
   def choose(useHistory:Boolean):String = if (useHistory) chooseHistory else chooseSimple
 }
 
-trait Bridge {
-  //0 NODATA 1 NORMAL 2 CHANGED
-  val status: IntegerProperty = IntegerProperty(0)
-  val classRoom = new ObjectProperty[ClassRoom]()
-  val useHistory: BooleanProperty = BooleanProperty(true)
-  val nowLabel: StringProperty = StringProperty("???")
-  val currentHeader: StringProperty = StringProperty("")
-}
-
-
-object SimpleApp extends JFXApp with Bridge with Controller {
+object SimpleApp extends JFXApp with Controller {
   stage = new PrimaryStage {
-    title <== when(status === 0) choose "拖拽数据开始抽取" otherwise
-        (when(status === 2) choose "数据发生变化，点击抽取" otherwise currentHeader)
+    title <== appTitle
     scene = new Scene(400,300) {
       root = new StackPane {
         id = "stackPane"
@@ -92,20 +81,30 @@ object SimpleApp extends JFXApp with Bridge with Controller {
             }
           })
       }
-      onShown = _ => {
-        stylesheets.add("app.css")
-        useHistory.onChange(status.set(2))
-        status.addListener { (_,_,c) =>
-          if (c == 2) { if (classRoom.get() != null) classRoom.get().reset() }
-          else if (c == 1) { nowLabel.set("开始") }
-          else if (c == 0) { nowLabel.set("???") }
-        }
-      }
+      onShown = _ => { stylesheets.add("app.css") }
     }
   }
 }
 
-trait Controller { self: Bridge =>
+trait Controller {
+  val classRoom = new ObjectProperty[ClassRoom]()
+
+  val status: IntegerProperty = IntegerProperty(0) //0 NODATA 1 NORMAL 2 CHANGED
+  val useHistory: BooleanProperty = BooleanProperty(true)
+  
+  val nowLabel: StringProperty = StringProperty("???")
+
+  val currentHeader: StringProperty = StringProperty("")
+  val appTitle = when(status === 0) choose "拖拽数据开始抽取" otherwise
+        (when(status === 2) choose "数据发生变化，点击抽取" otherwise currentHeader)
+
+  useHistory.onChange(status.set(2))
+  status.addListener { (_,_,c) =>
+    if (c == 2) { if (classRoom.get() != null) classRoom.get().reset() }
+    else if (c == 1) { nowLabel.set("开始") }
+    else if (c == 0) { nowLabel.set("???") }
+  }
+
   def readFiles(files:util.List[File]): Either[String,ClassRoom] = {
     try {
       val ab = new ArrayBuffer[String]()
@@ -125,6 +124,7 @@ trait Controller { self: Bridge =>
         Left(e.getMessage)
     }
   }
+
   @inline def showAlert(head:String = "注意",content:String = "注意")(op: => Unit): Unit = {
     new Alert(AlertType.Warning) {
       headerText = head
@@ -132,6 +132,7 @@ trait Controller { self: Bridge =>
     }.showAndWait()
     op
   }
+
   @inline def chooseOne(): Unit = try {
     status.set(1)
     val room = classRoom.get()

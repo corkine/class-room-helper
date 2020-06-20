@@ -1,0 +1,1 @@
+["sbt.Task[scala.collection.immutable.Map[java.lang.String, scala.collection.Seq[scala.Tuple2[java.nio.file.Path, sbt.nio.FileStamp]]]]",{"2.13.1":{"hashes":[["/Users/corkine/Desktop/classRoomHelper/src/main/scala/app.scala","23029b5f8977b804bdd410e50870ce3823a2067b"]],"lastModifiedTimes":[]}}]
